@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mestre Sinuqueiro — Descubra por que você ainda toma goleada no bar</title>
+  <meta name="description"
+    content="Faça o diagnóstico do seu jogo em 2 minutos e descubra o segredo que os craques do boteco não querem que você saiba." />
+  <meta property="og:title" content="Mestre Sinuqueiro — O segredo dos craques do boteco" />
+  <meta property="og:description"
+    content="Descubra por que você ainda erra bolas fáceis e como virar o jogo em poucos dias — sem ninguém saber que você estudou." />
+  <meta property="og:type" content="website" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- Progress Bar (quiz only) -->
+  <div class="progress-bar-container" id="progress-bar">
+    <div class="progress-bar-fill" id="progress-fill"></div>
+  </div>
+  <span class="progress-label" id="progress-label"></span>
+
+  <!-- ==========================================
+       QUIZ SECTION
+       ========================================== -->
+  <div class="quiz-wrapper" id="quiz-section">
+
+    <!-- SCREEN 0 — Welcome -->
+    <div class="screen active" id="screen-welcome">
+      <div class="welcome-badge">
+        <span>🎱</span> Diagnóstico gratuito
+      </div>
+
+      <h1 class="welcome-title">
+        Cansado de <em>errar bola fácil</em> na frente dos amigos?
+      </h1>
+
+      <p class="welcome-subtitle">
+        Descubra em 2 minutos o que tá travando seu jogo — e como corrigir isso em poucos dias, no seu ritmo, sem
+        ninguém saber.
+      </p>
+
+      <!-- Authority element -->
+      <div class="welcome-authority">
+        <div class="welcome-authority-icon">🏆</div>
+        <div class="welcome-authority-text">
+          <strong>+3.000 jogadores já destravaram</strong><br />
+          O mesmo método que os craques usam — agora acessível pra você
+        </div>
+      </div>
+
+      <div class="welcome-features">
+        <div class="welcome-feature"><span class="icon">⏱</span><span>2 minutos</span></div>
+        <div class="welcome-feature"><span class="icon">🔒</span><span>100% sigiloso</span></div>
+        <div class="welcome-feature"><span class="icon">🎯</span><span>Resultado na hora</span></div>
+      </div>
+
+      <button class="btn-primary" id="btn-start" type="button">Começar diagnóstico →</button>
+    </div>
+
+    <!-- SCREENS 1–6 — Questions -->
+    <div class="screen" id="screen-q1"><span class="question-number"></span>
+      <h2 class="question-title"></h2>
+      <div class="options-grid"></div>
+    </div>
+    <div class="screen" id="screen-q2"><span class="question-number"></span>
+      <h2 class="question-title"></h2>
+      <div class="options-grid"></div>
+    </div>
+    <div class="screen" id="screen-q3"><span class="question-number"></span>
+      <h2 class="question-title"></h2>
+      <div class="options-grid"></div>
+    </div>
+    <div class="screen" id="screen-q4"><span class="question-number"></span>
+      <h2 class="question-title"></h2>
+      <div class="options-grid"></div>
+    </div>
+    <div class="screen" id="screen-q5"><span class="question-number"></span>
+      <h2 class="question-title"></h2>
+      <div class="options-grid"></div>
+    </div>
+    <div class="screen" id="screen-q6"><span class="question-number"></span>
+      <h2 class="question-title"></h2>
+      <div class="options-grid"></div>
+    </div>
+
+  </div><!-- /quiz-section -->
+
+
+  <!-- ==========================================
+       LANDING PAGE — AIDA (hidden until result)
+       ========================================== -->
+  <div class="landing-page" id="landing-page">
+
+    <!-- ========== FOLD 1 — ATTENTION ========== -->
+    <section class="fold fold-attention" id="fold-attention">
+      <div class="fold-inner">
+        <div class="diag-badge">
+          <span class="diag-badge-icon">✅</span>
+          <span>Diagnóstico concluído</span>
+        </div>
+
+        <div class="diag-result-card" id="diag-result-card">
+          <div class="diag-icon" id="diag-icon"></div>
+          <div class="diag-level-label" id="diag-level-label">Seu diagnóstico</div>
+          <h1 class="diag-level-name" id="diag-level-name"></h1>
+          <p class="diag-description" id="diag-description"></p>
+        </div>
+
+        <h2 class="fold-headline" id="fold-headline"></h2>
+        <p class="fold-subheadline" id="fold-subheadline"></p>
+
+        <a href="#fold-vsl" class="btn-scroll-down">
+          Assistir o vídeo gratuito ↓
+        </a>
+      </div>
+    </section>
+
+
+    <!-- ========== FOLD 2 — INTEREST: VSL 9:16 ========== -->
+    <section class="fold fold-vsl" id="fold-vsl">
+      <div class="fold-inner">
+        <div class="vsl-label">
+          <span>🔴</span> Assista antes que saia do ar
+        </div>
+
+        <div class="vsl-container">
+          <div class="vsl-placeholder" id="vsl-placeholder">
+            <div class="vsl-play-btn">▶</div>
+            <p>Seu vídeo será carregado aqui</p>
+            <span class="vsl-ratio-label">9:16</span>
+          </div>
+        </div>
+
+        <p class="vsl-caption">
+          O segredo que já transformou o jogo de <strong>+3.000 jogadores</strong> pelo Brasil
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ========== FOLD 3 — INTEREST: DORES (espelhar o ICP) ========== -->
+    <section class="fold fold-pain" id="fold-pain">
+      <div class="fold-inner">
+        <span class="section-tag">Isso acontece com você?</span>
+        <h2 class="section-headline">Você não erra por falta de talento. <em>Você erra porque nunca te ensinaram o
+            jeito certo.</em></h2>
+
+        <div class="pain-cards">
+          <div class="pain-card">
+            <div class="pain-card-icon">😤</div>
+            <h3>Erra bola fácil na frente de todo mundo</h3>
+            <p>A galera tá olhando, você sabe que tem que acertar — e erra. O silêncio depois é pior que qualquer
+              piada.</p>
+          </div>
+          <div class="pain-card">
+            <div class="pain-card-icon">💸</div>
+            <h3>Perde aposta que não deveria</h3>
+            <p>Gasta R$30, R$50, R$80 por mês perdendo apostas. Enquanto o craque do bar fatura em cima de
+              você.</p>
+          </div>
+          <div class="pain-card">
+            <div class="pain-card-icon">🎱</div>
+            <h3>A branca vai pra qualquer lugar</h3>
+            <p>Acerta a bola, mas a branca some, encaçapa ou fica no pior lugar possível. Você não controla nada.</p>
+          </div>
+          <div class="pain-card">
+            <div class="pain-card-icon">📉</div>
+            <h3>Joga há anos e não sai do lugar</h3>
+            <p>Assiste vídeo, tenta copiar jogada de craque, e nada muda. Parece que tem um teto que você
+              não consegue romper.</p>
+          </div>
+        </div>
+
+        <div class="pain-highlight">
+          <p>Você joga há anos e continua no mesmo nível.<br /><strong>Prática sem método é só repetir os mesmos erros
+              com mais consistência.</strong></p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========== FOLD 4 — DESIRE: O Segredo ========== -->
+    <section class="fold fold-desire" id="fold-desire">
+      <div class="fold-inner">
+        <span class="section-tag">O segredo dos craques</span>
+        <h2 class="section-headline">O que os bons jogadores do bar <em>sabem e nunca te contaram</em></h2>
+        <p class="section-sub">O Mestre Sinuqueiro é o método que te dá a mesma vantagem dos craques — pra você aplicar
+          já na próxima partida.</p>
+
+        <div class="benefit-list">
+          <div class="benefit-item">
+            <div class="benefit-icon">🎯</div>
+            <div class="benefit-text">
+              <h4>Mira que não falha</h4>
+              <p>O truque de alinhamento que faz você acertar bolas que antes erraria de olho aberto. Simples, direto,
+                funciona desde o primeiro dia.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🔄</div>
+            <div class="benefit-text">
+              <h4>Controle absoluto da branca</h4>
+              <p>Saiba exatamente onde a branca vai parar — sempre. É isso que separa quem joga por sorte de quem domina
+                a mesa.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">💡</div>
+            <div class="benefit-text">
+              <h4>Efeitos que impressionam</h4>
+              <p>Retro, lateral, massé — os truques que fazem a galera parar pra assistir. E que você vai aplicar com
+                segurança.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">♟️</div>
+            <div class="benefit-text">
+              <h4>Leitura de mesa de craque</h4>
+              <p>Pensar 2-3 jogadas à frente. Enxergar o que ninguém enxerga. Essa é a diferença entre jogar e
+                dominar.</p>
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">💰</div>
+            <div class="benefit-text">
+              <h4>Ganhar as apostas que você sempre perde</h4>
+              <p>Com método, as apostas param de ser roleta e viram vantagem sua. O curso se paga no primeiro final de
+                semana.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="desire-quote">
+          <p>"Ninguém precisa saber como você melhorou. Só vão ver o resultado na mesa — e não vão entender de onde
+            veio."</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========== FOLD 5 — DESIRE: Prova Social ========== -->
+    <section class="fold fold-proof" id="fold-proof">
+      <div class="fold-inner">
+        <span class="section-tag">Quem já destravou</span>
+        <h2 class="section-headline">Jogadores iguais a você <em>que viraram o craque do bar</em></h2>
+
+        <div class="proof-stats">
+          <div class="proof-stat">
+            <span class="proof-stat-num">+3.000</span>
+            <span class="proof-stat-label">Jogadores</span>
+          </div>
+          <div class="proof-stat">
+            <span class="proof-stat-num">4.8 ⭐</span>
+            <span class="proof-stat-label">Avaliação</span>
+          </div>
+          <div class="proof-stat">
+            <span class="proof-stat-num">97%</span>
+            <span class="proof-stat-label">Recomendam</span>
+          </div>
+        </div>
+
+        <div class="testimonial-cards">
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar">C</div>
+              <div>
+                <strong>Carlos R.</strong>
+                <span>Campinas, SP</span>
+              </div>
+            </div>
+            <p>"Jogava há 12 anos e achava que já sabia tudo. Em 3 semanas a galera do bar começou a perguntar onde eu
+              aprendi. Não contei pra ninguém."</p>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar">M</div>
+              <div>
+                <strong>Marcelo A.</strong>
+                <span>Uberlândia, MG</span>
+              </div>
+            </div>
+            <p>"Perdia R$50-R$80 por mês em apostas. Hoje eu fui de perdedor a referência. O curso se pagou na primeira
+              semana."</p>
+          </div>
+          <div class="testimonial-card">
+            <div class="testimonial-header">
+              <div class="testimonial-avatar">J</div>
+              <div>
+                <strong>José Roberto</strong>
+                <span>Goiânia, GO</span>
+              </div>
+            </div>
+            <p>"Pensei: 'sinuca se aprende na prática, não em vídeo'. Depois de 4 semanas fui jogar e voei no boteco. A
+              galera não entendeu o que aconteceu."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========== FOLD 6 — ACTION: Oferta ========== -->
+    <section class="fold fold-action" id="fold-action">
+      <div class="fold-inner">
+
+        <div class="urgency-bar">
+          🔥 Acesso liberado hoje — vagas limitadas
+        </div>
+
+        <div class="offer-card">
+          <div class="offer-card-header">
+            <div class="badge">Recomendado pro seu nível</div>
+          </div>
+          <h3 class="offer-card-title">Mestre Sinuqueiro — O Método Completo</h3>
+          <p class="offer-card-subtitle">Tudo que os craques do bar sabem — organizado, passo a passo, pra você aplicar
+            já na próxima partida.</p>
+
+          <ul class="offer-card-features">
+            <li><span class="check">✓</span> Truques de mira que funcionam desde o primeiro dia</li>
+            <li><span class="check">✓</span> Controle absoluto da bola branca</li>
+            <li><span class="check">✓</span> Efeitos que impressionam (retro, lateral, massé)</li>
+            <li><span class="check">✓</span> Leitura de mesa — pense 2-3 jogadas à frente</li>
+            <li><span class="check">✓</span> Estratégias pra ganhar apostas com consistência</li>
+            <li><span class="check">✓</span> Acesso vitalício + atualizações futuras</li>
+          </ul>
+
+          <div class="offer-price">
+            <span class="old">R$ 197</span>
+            <span class="current">R$ 47</span>
+          </div>
+          <p class="offer-price-sub">Menos que uma noite de cervejas · Acesso imediato</p>
+
+          <a href="#" class="btn-primary btn-cta-green" id="btn-cta">
+            Quero dominar a mesa agora →
+          </a>
+        </div>
+
+        <div class="action-guarantees">
+          <div class="guarantee-item">
+            <span>🔒</span>
+            <div>
+              <strong>Garantia total de 7 dias</strong>
+              <p>Se não melhorar seu jogo, devolvemos cada centavo. Sem perguntas, sem burocracia.</p>
+            </div>
+          </div>
+          <div class="guarantee-item">
+            <span>🤫</span>
+            <div>
+              <strong>Ninguém precisa saber</strong>
+              <p>Assista no celular, no seu tempo. Só vão perceber quando você começar a ganhar.</p>
+            </div>
+          </div>
+          <div class="guarantee-item">
+            <span>⚡</span>
+            <div>
+              <strong>Resultado em dias, não meses</strong>
+              <p>15 minutos por dia, no intervalo ou antes de dormir. Na próxima ida ao bar, você já sente a
+                diferença.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="final-cta">
+          <p>Você perdeu quanto em apostas esse mês?<br /><strong>R$47 é a última compra que vai fazer você parar de
+              perder.</strong></p>
+          <a href="#" class="btn-primary btn-cta-green" id="btn-cta-final">
+            Quero virar o craque do bar — R$ 47 →
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /landing-page -->
+
+
+  <!-- Sales Notification -->
+  <div class="sales-notification" id="sales-notification">
+    <div class="notif-avatar"></div>
+    <div class="notif-text">
+      <strong></strong> acabou de destravar o jogo
+      <div class="notif-time"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
