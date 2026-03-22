@@ -24,6 +24,7 @@
     {
       id: 1,
       label: 'Etapa 2 de 8',
+      trackName: 'Quiz_01_Nivel_Atual',
       title: 'Como tá seu jogo hoje na sinuca?',
       options: [
         { text: 'Fraco — erro bola fácil na cara de todo mundo', points: 1 },
@@ -35,6 +36,7 @@
     {
       id: 2,
       label: 'Etapa 3 de 8',
+      trackName: 'Quiz_02_Frequencia',
       title: 'Quantas vezes por semana você joga no bar?',
       options: [
         { text: 'Raramente — de vez em quando', points: 1 },
@@ -46,6 +48,7 @@
     {
       id: 3,
       label: 'Etapa 4 de 8',
+      trackName: 'Quiz_03_Maior_Dificuldade',
       title: 'O que mais te atrapalha na mesa?',
       options: [
         { text: 'Mira — erro bolas que deveria acertar de olho fechado', points: 1 },
@@ -57,6 +60,7 @@
     {
       id: 4,
       label: 'Etapa 5 de 8',
+      trackName: 'Quiz_04_Tentou_Melhorar',
       title: 'Você já tentou melhorar seu jogo?',
       options: [
         { text: 'Nunca — aprendi tudo na raça, jogando', points: 1 },
@@ -68,6 +72,7 @@
     {
       id: 5,
       label: 'Etapa 6 de 8',
+      trackName: 'Quiz_05_Desejo_Principal',
       title: 'O que você mais quer conquistar na sinuca?',
       options: [
         { text: 'Parar de passar vergonha e jogar com confiança', points: 1 },
@@ -79,6 +84,7 @@
     {
       id: 6,
       label: 'Etapa 7 de 8',
+      trackName: 'Quiz_06_Maior_Frustracao',
       title: 'Qual dessas situações mais te irrita?',
       options: [
         { text: 'Errar uma bola ridícula na frente da galera', points: 1 },
@@ -190,10 +196,9 @@
           card.classList.add('selected', 'shake');
           totalScore += opt.points;
 
-          // Track each question answered
-          track('QuizStep', {
+          // Track each question answered with unique name
+          track(q.trackName, {
             step: screenIndex,
-            question: q.title,
             answer: opt.text
           });
           setTimeout(() => {
