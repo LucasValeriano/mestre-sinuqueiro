@@ -292,6 +292,18 @@
     }
   });
 
+  // ---- FAQ accordion ----
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.faq-question');
+    if (!btn) return;
+    const item = btn.closest('.faq-item');
+    const wasOpen = item.classList.contains('open');
+    // close all
+    document.querySelectorAll('.faq-item.open').forEach((el) => el.classList.remove('open'));
+    // toggle clicked
+    if (!wasOpen) item.classList.add('open');
+  });
+
   // ---- Init ----
   function init() {
     initQuestions();
