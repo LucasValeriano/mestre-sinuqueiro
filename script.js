@@ -7,6 +7,18 @@
 (function () {
   'use strict';
 
+  // ---- Facebook Pixel helper ----
+  function track(eventName, params) {
+    if (typeof fbq === 'function') {
+      fbq('trackCustom', eventName, params || {});
+    }
+  }
+  function trackStandard(eventName, params) {
+    if (typeof fbq === 'function') {
+      fbq('track', eventName, params || {});
+    }
+  }
+
   // ---- Quiz Data — Perguntas espelham a jornada do ICP no boteco ----
   const questions = [
     {
@@ -177,6 +189,13 @@
           grid.querySelectorAll('.option-card').forEach((c) => c.classList.remove('selected'));
           card.classList.add('selected', 'shake');
           totalScore += opt.points;
+
+          // Track each question answered
+          track('QuizStep', {
+            step: screenIndex,
+            question: q.title,
+            answer: opt.text
+          });
           setTimeout(() => {
             card.classList.remove('shake');
             if (screenIndex < questions.length) {
@@ -202,6 +221,13 @@
     document.getElementById('diag-description').textContent = result.description;
     document.getElementById('fold-headline').textContent = result.headline;
     document.getElementById('fold-subheadline').textContent = result.subheadline;
+
+    // Track quiz completion
+    track('QuizCompleted', {
+      result: result.level,
+      score: totalScore
+    });
+    trackStandard('Lead');
 
     const lastScreen = screens[currentScreen];
     lastScreen.classList.add('slide-out');
@@ -253,11 +279,20 @@
     notifTimer = setTimeout(showSalesNotification, delay);
   }
 
+  // ---- CTA tracking ----
+  document.addEventListener('click', (e) => {
+    const cta = e.target.closest('#btn-cta, #btn-cta-final');
+    if (cta) {
+      trackStandard('InitiateCheckout', { value: 47, currency: 'BRL' });
+    }
+  });
+
   // ---- Init ----
   function init() {
     initQuestions();
     updateProgress(0);
     startBtn.addEventListener('click', () => {
+      track('QuizStarted');
       goToScreen(1);
       setTimeout(showSalesNotification, 12000);
     });
