@@ -286,7 +286,7 @@
 
   // ---- CTA tracking ----
   document.addEventListener('click', (e) => {
-    const cta = e.target.closest('#btn-cta, #btn-cta-final');
+    const cta = e.target.closest('#btn-cta, #btn-anchor-vsl');
     if (cta) {
       trackStandard('InitiateCheckout', { value: 47, currency: 'BRL' });
     }

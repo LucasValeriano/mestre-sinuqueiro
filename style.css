@@ -907,9 +907,12 @@ h2.question-title {
 }
 
 .offer-price .old {
-  font-size: 0.88rem;
-  color: var(--text-muted);
+  font-size: 1.3rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--danger);
   text-decoration: line-through;
+  opacity: 0.85;
 }
 
 .offer-price .current {
