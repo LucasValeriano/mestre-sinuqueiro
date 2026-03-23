@@ -286,35 +286,61 @@
     notifTimer = setTimeout(showSalesNotification, delay);
   }
 
-  // ---- CTA tracking ----
+  // ---- Global Event Delegation for Clicks ----
   document.addEventListener('click', (e) => {
-    const cta = e.target.closest('#btn-cta, #btn-anchor-vsl');
-    if (cta) {
-      trackStandard('InitiateCheckout', { value: 47, currency: 'BRL' });
-    }
-  });
+    const target = e.target;
 
-  // ---- FAQ accordion ----
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('.faq-question');
-    if (!btn) return;
-    const item = btn.closest('.faq-item');
-    const wasOpen = item.classList.contains('open');
-    // close all
-    document.querySelectorAll('.faq-item.open').forEach((el) => el.classList.remove('open'));
-    // toggle clicked
-    if (!wasOpen) item.classList.add('open');
+    // 1. CTA tracking
+    const cta = target.closest('#btn-cta, #btn-anchor-vsl, #btn-back-discount');
+    if (cta) {
+      const isDiscount = cta.id === 'btn-back-discount';
+      trackStandard(isDiscount ? 'DiscountCheckoutClick' : 'InitiateCheckout', {
+        value: isDiscount ? 23.50 : 47,
+        currency: 'BRL'
+      });
+    }
+
+    // 2. FAQ accordion
+    const faqBtn = target.closest('.faq-question');
+    if (faqBtn) {
+      const item = faqBtn.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach((el) => el.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    }
+
+    // 3. Smooth scroll for internal links (prevents hash changes in history)
+    const scrollTarget = target.closest('a[href^="#"], [data-scroll]');
+    if (scrollTarget) {
+      const targetSelector = scrollTarget.getAttribute('href') || scrollTarget.getAttribute('data-scroll');
+      if (targetSelector && targetSelector.startsWith('#') && targetSelector !== '#') {
+        e.preventDefault();
+        const targetEl = document.querySelector(targetSelector);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
   });
 
   // ---- Backredirect & Discount Popup ----
   function initBackredirect() {
+    if (window.backredirectInitialized) return;
+    window.backredirectInitialized = true;
+
     const popup = document.getElementById('back-popup');
     const closeBtn = document.getElementById('back-popup-close');
     const timerEl = document.getElementById('back-timer');
     let popupShown = false;
 
-    // Push initial state to history
-    history.pushState(null, null, location.href);
+    // State-based history management (delay to ensure stability)
+    setTimeout(() => {
+      // Only push if not already in state
+      if (!history.state || !history.state.isHome) {
+        history.pushState({ isBack: true }, null, location.href);
+        history.pushState({ isHome: true }, null, location.href);
+      }
+    }, 100);
 
     const showPopup = () => {
       if (popupShown) return;
@@ -324,11 +350,13 @@
       track('ExitIntent_Popup_Shown');
     };
 
-    // Capture back button
-    window.addEventListener('popstate', () => {
-      showPopup();
-      // Keep them on the page
-      history.pushState(null, null, location.href);
+    // Capture back button with state check
+    window.addEventListener('popstate', (e) => {
+      if (e.state && e.state.isBack) {
+        showPopup();
+        // Push them forward again so the next 'back' still works
+        history.pushState({ isHome: true }, null, location.href);
+      }
     });
 
     // Exit intent (desktop)
