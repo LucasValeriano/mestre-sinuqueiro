@@ -243,6 +243,8 @@
       progressLabel.classList.add('hidden');
       landingPage.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'instant' });
+      // Initialize backredirect when reaching the landing page
+      initBackredirect();
     }, 350);
   }
 
@@ -303,6 +305,63 @@
     // toggle clicked
     if (!wasOpen) item.classList.add('open');
   });
+
+  // ---- Backredirect & Discount Popup ----
+  function initBackredirect() {
+    const popup = document.getElementById('back-popup');
+    const closeBtn = document.getElementById('back-popup-close');
+    const timerEl = document.getElementById('back-timer');
+    let popupShown = false;
+
+    // Push initial state to history
+    history.pushState(null, null, location.href);
+
+    const showPopup = () => {
+      if (popupShown) return;
+      popup.classList.add('active');
+      popupShown = true;
+      startPopupTimer(600, timerEl); // 10 minutes
+      track('ExitIntent_Popup_Shown');
+    };
+
+    // Capture back button
+    window.addEventListener('popstate', () => {
+      showPopup();
+      // Keep them on the page
+      history.pushState(null, null, location.href);
+    });
+
+    // Exit intent (desktop)
+    document.addEventListener('mouseleave', (e) => {
+      if (e.clientY < 0) showPopup();
+    });
+
+    closeBtn.addEventListener('click', () => {
+      popup.classList.remove('active');
+    });
+
+    popup.addEventListener('click', (e) => {
+      if (e.target === popup) popup.classList.remove('active');
+    });
+  }
+
+  function startPopupTimer(duration, display) {
+    let timer = duration, minutes, seconds;
+    const interval = setInterval(() => {
+      minutes = parseInt(timer / 60, 10);
+      seconds = parseInt(timer % 60, 10);
+
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      seconds = seconds < 10 ? '0' + seconds : seconds;
+
+      display.textContent = minutes + ':' + seconds;
+
+      if (--timer < 0) {
+        clearInterval(interval);
+        display.textContent = '00:00';
+      }
+    }, 1000);
+  }
 
   // ---- Init ----
   function init() {
