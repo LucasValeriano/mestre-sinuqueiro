@@ -312,7 +312,7 @@
     // 3. Smooth scroll for internal links (prevents hash changes in history)
     const scrollTarget = target.closest('a[href^="#"], [data-scroll]');
     if (scrollTarget) {
-      const targetSelector = scrollTarget.getAttribute('href') || scrollTarget.getAttribute('data-scroll');
+      const targetSelector = scrollTarget.getAttribute('data-scroll') || scrollTarget.getAttribute('href');
       if (targetSelector && targetSelector.startsWith('#') && targetSelector !== '#') {
         e.preventDefault();
         const targetEl = document.querySelector(targetSelector);
