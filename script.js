@@ -391,10 +391,59 @@
     }, 1000);
   }
 
+  // ---- Anti-Cloning & Content Protection (Ads Hardening) ----
+  function initAntiCloning() {
+    // 1. Silent Mouse Block (Right-click & Select)
+    document.addEventListener('contextmenu', (e) => e.preventDefault(), false);
+    document.addEventListener('selectstart', (e) => e.preventDefault(), false);
+
+    // 2. Keyboard Shield (F12, Ctrl+U, Ctrl+Shift+I, Ctrl+S, Ctrl+C)
+    document.addEventListener('keydown', (e) => {
+      // Allow standard navigation (F5, etc.) but block developer/save shortcuts
+      const isDevTools = (e.keyCode === 123) || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67));
+      const isViewSource = (e.ctrlKey && e.keyCode === 85);
+      const isSavePage = (e.ctrlKey && e.keyCode === 83);
+      const isCopy = (e.ctrlKey && e.keyCode === 67);
+
+      if (isDevTools || isViewSource || isSavePage || isCopy) {
+        e.preventDefault();
+        return false;
+      }
+    }, false);
+
+    // 3. Simple Bot/Cloner Deterrence (navigator.webdriver check)
+    // Most cloners/scrapers use headless browsers.
+    if (navigator.webdriver) {
+      document.body.style.display = 'none'; // Silent hide for automated environments
+    }
+
+    // 4. Console "Debugger" Trap (Subtle interdiction)
+    // Only triggers if someone manually opens DevTools.
+    // We use a self-invoking function to keep it silent.
+    (function () {
+      try {
+        (function block() {
+          if (
+            window.outerHeight - window.innerHeight > 160 ||
+            window.outerWidth - window.innerWidth > 160
+          ) {
+            // Optional: You could log something here, but user asked for silent.
+            // A simple debugger statement is the most effective "fence".
+            // debugger;
+          }
+          setTimeout(block, 1000);
+        })();
+      } catch (e) {}
+    })();
+  }
+
   // ---- Init ----
   function init() {
     initQuestions();
     updateProgress(0);
+    // Initialize protection
+    initAntiCloning();
+
     startBtn.addEventListener('click', () => {
       track('QuizStarted');
       goToScreen(1);
