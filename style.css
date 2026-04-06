@@ -376,16 +376,16 @@ h2.question-title {
 
 .hero-headline {
   font-family: var(--font-heading);
-  font-size: clamp(2.2rem, 8vw, 3.8rem);
+  font-size: clamp(2rem, 9vw, 4rem); /* Improved lower/upper bounds */
   font-weight: 900;
-  line-height: 1.05;
+  line-height: 1.0; /* even tighter for aggressive look */
   color: #fff;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
   text-transform: uppercase;
-  letter-spacing: -1.5px;
+  letter-spacing: -1.75px;
   text-shadow: 0 0 40px rgba(175, 144, 218, 0.2);
 }
 
@@ -401,11 +401,11 @@ h2.question-title {
 
 .hero-subheadline {
   font-family: var(--font-body);
-  font-size: clamp(1.1rem, 3.5vw, 1.4rem);
+  font-size: clamp(1rem, 4vw, 1.35rem);
   color: var(--text-muted);
   max-width: 750px;
   margin: 0 auto;
-  line-height: 1.4;
+  line-height: 1.45;
   font-weight: 500;
 }
 
@@ -1316,5 +1316,74 @@ h2.question-title {
   }
   .back-popup-title {
     font-size: 1.4rem;
+  }
+}
+
+/* ==========================================
+   MOBILE FIRST OPTIMIZATIONS (<768px)
+   ========================================== */
+@media (max-width: 768px) {
+  .fold {
+    padding: 60px 15px; /* Reduced vertical & lateral spacing */
+  }
+
+  .fold-inner {
+    max-width: 100%;
+  }
+
+  /* Fold Hero Adjustments */
+  .fold-hero {
+    padding: 50px 12px 30px;
+  }
+
+  .hero-headline {
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .hero-subheadline {
+    max-width: 100%;
+    padding: 0 5px;
+  }
+
+  /* VSL Adjustments */
+  .vsl-container {
+    max-width: 100%;
+    margin-bottom: 12px;
+  }
+
+  /* Section Headlines */
+  .section-headline {
+    font-size: 1.6rem !important; /* Force smaller h2 on mobile */
+    line-height: 1.2;
+  }
+
+  .section-sub {
+    font-size: 0.9rem;
+    padding: 0 10px;
+    margin-bottom: 28px;
+  }
+
+  /* FAQ Accordion */
+  .faq-question {
+    padding: 18px 14px;
+    font-size: 0.95rem;
+  }
+
+  /* Buttons */
+  .btn-primary, .btn-scroll-down, .btn-cta-green {
+    padding: 16px 20px !important;
+    font-size: 0.95rem !important;
+    border-radius: 12px;
+  }
+}
+
+/* Extra small devices (320px - 360px) */
+@media (max-width: 360px) {
+  .hero-headline {
+    font-size: 1.7rem !important;
+  }
+  .hero-subheadline {
+    font-size: 0.95rem !important;
   }
 }
