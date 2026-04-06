@@ -53,6 +53,12 @@ body {
   user-select: none;
 }
 
+/* Utilities */
+.mobile-only { display: none; }
+@media (max-width: 768px) {
+  .mobile-only { display: inline-block; }
+}
+
 /* Ambient glow */
 body::before {
   content: '';
