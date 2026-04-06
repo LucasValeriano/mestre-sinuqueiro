@@ -1,0 +1,17 @@
+# Media files - Too large for standard GitHub repo
+*.mp4
+*.mp3
+*.mov
+*.wav
+*.avi
+*.wmv
+*.flac
+*.m4a
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Agent files
+.agent/
+.gemini/
