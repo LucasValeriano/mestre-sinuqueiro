@@ -22,6 +22,7 @@
   // ---- State ----
   let currentScreen = 0;
   const totalSteps = 8;
+  let offerTracked = false; // Prevents double firing of scroll event
 
   // ---- DOM ----
   const landingPage = document.getElementById('landing-page');
@@ -73,10 +74,18 @@
     const cta = target.closest('#btn-cta, #btn-anchor-vsl, #btn-back-discount');
     if (cta) {
       const isDiscount = cta.id === 'btn-back-discount';
-      trackStandard(isDiscount ? 'DiscountCheckoutClick' : 'InitiateCheckout', {
-        value: isDiscount ? 23.50 : 47,
-        currency: 'BRL'
+      const checkoutValue = isDiscount ? 23.50 : 47.00;
+      
+      trackStandard('InitiateCheckout', {
+        value: checkoutValue,
+        currency: 'BRL',
+        content_name: isDiscount ? 'Discounted Offer' : 'Main Offer',
+        content_category: 'Curso Sinuca'
       });
+      
+      if (isDiscount) {
+        track('BackRedirect_DiscountTaken', { value: 23.50 });
+      }
     }
 
     // 2. FAQ accordion
@@ -216,14 +225,35 @@
     })();
   }
 
+  // ---- Scroll Watcher (Offer Tracking) ----
+  function initScrollTracking() {
+    const offerSection = document.getElementById('fold-action');
+    if (!offerSection) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !offerTracked) {
+          offerTracked = true;
+          track('ViewOffer', { value: 47, currency: 'BRL' });
+          trackStandard('AddToCart', { value: 47, currency: 'BRL', content_name: 'Main Offer' });
+          observer.unobserve(offerSection);
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(offerSection);
+  }
+
   // ---- Init ----
   function init() {
     // 1. Initialize global features
     initAntiCloning();
     initBackredirect();
+    initScrollTracking();
     
-    // 2. Initial Tracking (Direct Access)
-    trackStandard('Lead');
+    // 2. Initial Tracking (Direct Funnel)
+    trackStandard('ViewContent', { content_name: 'Landing Page VSL', content_category: 'Direct Funnel' });
+    trackStandard('Lead', { source: 'Direct_VSL' });
     track('LandingPage_DirectAccess');
 
     // 3. Start sales notifications with delay
