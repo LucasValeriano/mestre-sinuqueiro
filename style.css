@@ -13,12 +13,12 @@
   --bg-card-hover: rgba(255, 255, 255, 0.07);
   --border-card: rgba(255, 255, 255, 0.08);
   --primary: #8B5CF6; /* Vibrant Violet for high visibility */
-  --primary-light: #C4B5FD; /* Much lighter for high contrast on small text */
+  --primary-light: #E9D5FF; /* Close to white with purple tint for maximum contrast */
   --primary-glow: rgba(139, 92, 246, 0.5);
-  --primary-glow-soft: rgba(139, 92, 246, 0.2);
+  --primary-glow-soft: rgba(139, 92, 246, 0.25);
   --text-primary: #FFFFFF;
-  --text-secondary: rgba(255, 255, 255, 0.9); /* Near opaque for clarity */
-  --text-muted: rgba(255, 255, 255, 0.7); /* Significant increase for subheadlines */
+  --text-secondary: rgba(255, 255, 255, 0.95); /* Nearly solid for clarity */
+  --text-muted: rgba(255, 255, 255, 0.82); /* High visibility for subheadings */
   --success: #22C55E;
   --warning: #F59E0B;
   --danger: #EF4444;
