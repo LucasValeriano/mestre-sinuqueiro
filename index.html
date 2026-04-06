@@ -42,107 +42,21 @@
 
 <body>
 
-  <!-- Progress Bar (quiz only) -->
-  <div class="progress-bar-container" id="progress-bar">
-    <div class="progress-bar-fill" id="progress-fill"></div>
-  </div>
-  <span class="progress-label" id="progress-label"></span>
-
-  <!-- ==========================================
-       QUIZ SECTION
-       ========================================== -->
-  <div class="quiz-wrapper" id="quiz-section">
-
-    <!-- SCREEN 0 — Welcome -->
-    <div class="screen active" id="screen-welcome">
-      <div class="welcome-badge">
-        <span>🎱</span> Diagnóstico gratuito
-      </div>
-
-      <h1 class="welcome-title">
-        Cansado de <em>errar bola fácil</em> na frente dos amigos?
-      </h1>
-
-      <p class="welcome-subtitle">
-        Descubra em 2 minutos o que tá travando seu jogo — e como corrigir isso em poucos dias, no seu ritmo, sem
-        ninguém saber.
-      </p>
-
-      <!-- Authority element -->
-      <div class="welcome-authority">
-        <div class="welcome-authority-icon">🏆</div>
-        <div class="welcome-authority-text">
-          <strong>+3.000 jogadores já destravaram</strong><br />
-          O mesmo método que os craques usam — agora acessível pra você
-        </div>
-      </div>
-
-      <div class="welcome-features">
-        <div class="welcome-feature"><span class="icon">⏱</span><span>2 minutos</span></div>
-        <div class="welcome-feature"><span class="icon">🔒</span><span>100% sigiloso</span></div>
-        <div class="welcome-feature"><span class="icon">🎯</span><span>Resultado na hora</span></div>
-      </div>
-
-      <button class="btn-primary" id="btn-start" type="button">Começar diagnóstico →</button>
-    </div>
-
-    <!-- SCREENS 1–6 — Questions -->
-    <div class="screen" id="screen-q1"><span class="question-number"></span>
-      <h2 class="question-title"></h2>
-      <div class="options-grid"></div>
-    </div>
-    <div class="screen" id="screen-q2"><span class="question-number"></span>
-      <h2 class="question-title"></h2>
-      <div class="options-grid"></div>
-    </div>
-    <div class="screen" id="screen-q3"><span class="question-number"></span>
-      <h2 class="question-title"></h2>
-      <div class="options-grid"></div>
-    </div>
-    <div class="screen" id="screen-q4"><span class="question-number"></span>
-      <h2 class="question-title"></h2>
-      <div class="options-grid"></div>
-    </div>
-    <div class="screen" id="screen-q5"><span class="question-number"></span>
-      <h2 class="question-title"></h2>
-      <div class="options-grid"></div>
-    </div>
-    <div class="screen" id="screen-q6"><span class="question-number"></span>
-      <h2 class="question-title"></h2>
-      <div class="options-grid"></div>
-    </div>
-
-  </div><!-- /quiz-section -->
-
-
-  <!-- ==========================================
-       LANDING PAGE — AIDA (hidden until result)
-       ========================================== -->
   <div class="landing-page" id="landing-page">
 
-    <!-- ========== FOLD 1 — ATTENTION ========== -->
-    <section class="fold fold-attention" id="fold-attention">
+    <!-- ========== FOLD 0 — HERO (Headline) ========== -->
+    <section class="fold fold-hero" id="fold-hero">
       <div class="fold-inner">
-        <div class="diag-badge">
-          <span class="diag-badge-icon">✅</span>
-          <span>Diagnóstico concluído</span>
-        </div>
-
-        <div class="diag-result-card" id="diag-result-card">
-          <div class="diag-icon" id="diag-icon"></div>
-          <div class="diag-level-label" id="diag-level-label">Seu diagnóstico</div>
-          <h1 class="diag-level-name" id="diag-level-name"></h1>
-          <p class="diag-description" id="diag-description"></p>
-        </div>
-
-        <h2 class="fold-headline" id="fold-headline"></h2>
-        <p class="fold-subheadline" id="fold-subheadline"></p>
-
-        <a href="javascript:void(0)" data-scroll="#fold-vsl" class="btn-scroll-down">
-          Assistir o vídeo gratuito ↓
-        </a>
+        <h1 class="hero-headline">
+          PARE DE PASSAR VERGONHA NO BAR: <em>O Segredo "Proibido"</em> para Nunca mais Errar uma Bola Fácil e Ganhar Todas as Apostas
+        </h1>
+        <p class="hero-subheadline">
+          Enquanto você gasta fortunas perdendo partidas bobas, eles lucram com o conhecimento que você ainda não tem. Assista este vídeo rápido e domine a mesa em 7 dias — sem ninguém saber seu segredo.
+        </p>
       </div>
     </section>
+
+
 
 
     <!-- ========== FOLD 2 — INTEREST: VSL 9:16 ========== -->
