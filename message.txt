@@ -1,0 +1,2081 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp H4ck3r Terminal v2.10 (Final com Contatos)</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: #000;
+            color: #00ff00;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Matrix Rain Background */
+        .matrix-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .matrix-column {
+            position: absolute;
+            top: -100%;
+            font-size: 20px;
+            line-height: 20px;
+            animation: matrix-fall linear infinite;
+        }
+
+        @keyframes matrix-fall {
+            to {
+                top: 100%;
+            }
+        }
+
+        /* Scanlines Effect */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                transparent 50%,
+                rgba(0, 255, 0, 0.03) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 2;
+            animation: scanlines 10s linear infinite;
+        }
+
+        @keyframes scanlines {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 20px; }
+        }
+
+        /* Main Container */
+        .terminal-container {
+            position: relative;
+            max-width: 800px;
+            margin: 50px auto;
+            background: rgba(0, 20, 0, 0.9);
+            border: 2px solid #00ff00;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.5),
+                inset 0 0 20px rgba(0, 255, 0, 0.1);
+            z-index: 10;
+            animation: terminal-glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes terminal-glow {
+            from { box-shadow: 0 0 20px rgba(0, 255, 0, 0.5), inset 0 0 20px rgba(0, 255, 0, 0.1); }
+            to { box-shadow: 0 0 30px rgba(0, 255, 0, 0.8), inset 0 0 30px rgba(0, 255, 0, 0.2); }
+        }
+
+        /* Terminal Header */
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #00ff00;
+        }
+
+        .terminal-title {
+            flex: 1;
+            font-size: 18px;
+            text-shadow: 0 0 10px #00ff00;
+            animation: glitch 3s infinite;
+        }
+
+        @keyframes glitch {
+            0%, 100% { text-shadow: 0 0 10px #00ff00; }
+            20% { text-shadow: 3px 0 10px #ff0000, -3px 0 10px #00ffff; }
+            21% { text-shadow: 0 0 10px #00ff00; }
+        }
+
+        .terminal-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .terminal-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #00ff00;
+        }
+
+        /* ASCII Art */
+        .ascii-art {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 10px;
+            line-height: 10px;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+            white-space: pre;
+        }
+
+        /* Form Styles */
+        .hack-form {
+            margin: 30px 0;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+            text-align: left;
+        }
+
+        .input-label::before {
+            content: "> ";
+            color: #00ff00;
+        }
+
+        .hack-input {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 16px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2);
+            transition: all 0.3s;
+        }
+
+        .hack-input:focus {
+            outline: none;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 255, 0, 0.3),
+                0 0 10px rgba(0, 255, 0, 0.5);
+            background: rgba(0, 50, 0, 0.3);
+        }
+
+        .hack-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #000, #001100);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .hack-button:hover:not(:disabled) {
+            background: linear-gradient(45deg, #001100, #003300);
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 0.8),
+                inset 0 0 20px rgba(0, 255, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .hack-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .hack-button::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .hack-button:hover::before {
+            left: 100%;
+        }
+
+        /* Hacking Screen */
+        .hacking-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .hacking-screen.active {
+            display: block;
+        }
+
+        .hack-terminal {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #000;
+            border: 2px solid #00ff00;
+            padding: 20px;
+            font-size: 14px;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.5);
+            position: relative;
+        }
+
+        /* Animated border effect */
+        .hack-terminal::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00ff00, #00aa00, #00ff00, #00ffff);
+            background-size: 400% 400%;
+            animation: borderGlow 3s ease infinite;
+            z-index: -1;
+            filter: blur(5px);
+        }
+
+        @keyframes borderGlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hack-header {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+
+        .target-info {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00ff00;
+            padding: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Scanning line effect */
+        .target-info::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff00, transparent);
+            animation: scanning 2s linear infinite;
+        }
+
+        @keyframes scanning {
+            0% { top: 0; }
+            100% { top: 100%; }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #001100;
+            border: 1px solid #00ff00;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #00aa00, #00ff00);
+            background-size: 200% 100%;
+            width: 0%;
+            transition: width 0.3s;
+            box-shadow: 0 0 20px #00ff00;
+            animation: progressPulse 1s linear infinite;
+        }
+
+        @keyframes progressPulse {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        /* Flashing warning during progress */
+        .progress-bar::before {
+            content: "⚠ ACCESSING RESTRICTED DATA ⚠";
+            position: absolute;
+            top: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff0000;
+            font-size: 10px;
+            font-weight: bold;
+            opacity: 0;
+            animation: warningFlash 2s infinite;
+        }
+
+        @keyframes warningFlash {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-weight: bold;
+            text-shadow: 0 0 5px #000;
+        }
+
+        .terminal-output {
+            background: #000;
+            border: 1px solid #00ff00;
+            padding: 15px;
+            height: 300px;
+            overflow-y: auto;
+            font-size: 12px;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        /* Matrix rain inside terminal */
+        .terminal-output::before {
+            content: "01001000 01000001 01000011 01001011 01001001 01001110 01000111";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            color: #003300;
+            font-size: 8px;
+            opacity: 0.3;
+            animation: binaryFlash 3s infinite;
+        }
+
+        @keyframes binaryFlash {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        .terminal-line {
+            margin: 5px 0;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            position: relative;
+        }
+
+        /* Random glitch on lines */
+        .terminal-line:nth-child(odd) {
+            animation: fadeIn 0.5s forwards, occasionalGlitch 10s infinite;
+        }
+
+        @keyframes occasionalGlitch {
+            0%, 99% { transform: translateX(0); }
+            99.5% { transform: translateX(-2px); }
+            99.8% { transform: translateX(2px); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .success { 
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+        
+        .warning { 
+            color: #ffff00;
+            text-shadow: 0 0 5px #ffff00;
+            animation: warningPulse 2s infinite;
+        }
+        
+        @keyframes warningPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .error { 
+            color: #ff0000;
+            text-shadow: 0 0 5px #ff0000;
+        }
+        
+        .info { 
+            color: #00ffff;
+            text-shadow: 0 0 3px #00ffff;
+        }
+
+        /* Results Container */
+        .results-container {
+            display: none;
+            background: rgba(0, 20, 0, 0.9);
+            border: 2px solid #00ff00;
+            padding: 20px;
+            margin-top: 20px;
+            animation: slideIn 0.5s;
+        }
+
+        .results-container.show {
+            display: block;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .results-header {
+            text-align: center;
+            font-size: 20px;
+            color: #00ff00;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px #00ff00;
+            animation: pulse 2s infinite;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .data-card {
+            background: #000;
+            border: 1px solid #00ff00;
+            padding: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .data-card:hover {
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .data-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ff00, transparent);
+            animation: scan 3s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .data-label {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .data-value {
+            font-size: 28px;
+            color: #00ff00;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff00;
+            animation: countUp 1s ease-out;
+        }
+
+        @keyframes countUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .data-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            opacity: 0.3;
+        }
+
+        .image-section {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        /* Contacts Section */
+        .contacts-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .contact-card {
+            background: #000;
+            border: 1px solid #00ff00;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .contact-card:hover {
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+            transform: translateY(-3px);
+        }
+        .contact-card img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #00ff00;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+        .contact-card .contact-name {
+            font-weight: bold;
+            color: #fff;
+        }
+        .contact-card .contact-phone {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .result-image {
+            max-width: 100%;
+            max-height: 400px;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.5);
+            animation: imageReveal 1s ease-out;
+        }
+
+        @keyframes imageReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.8) rotate(5deg);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
+            }
+        }
+        
+        /* Media Gallery Section */
+        .media-gallery-section {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .media-grid img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border: 2px solid #00ff00;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .media-grid img:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+        }
+
+        /* Lightbox */
+        .lightbox-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 20, 0, 0.9);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+            animation: fadeIn 0.3s;
+        }
+        .lightbox-overlay.active {
+            display: flex;
+        }
+        #lightboxImage {
+            max-width: 90vw;
+            max-height: 90vh;
+            border: 3px solid #00ff00;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.5);
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: #fff;
+            cursor: pointer;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .action-buttons {
+            text-align: center;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .close-button, .view-data-button {
+            background: #000;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin: 10px;
+            display: inline-block;
+            font-family: 'Share Tech Mono', monospace;
+            text-transform: uppercase;
+            transition: all 0.3s;
+        }
+        
+        .close-button:hover {
+            background: #001100;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        .view-data-button {
+            background: #00ff00;
+            color: #000;
+            font-weight: bold;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+        
+        .view-data-button:hover {
+            background: #003300;
+            color: #00ff00;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+        }
+        
+        /* Glitch Text Effect */
+        .glitch-text {
+            position: relative;
+            color: #00ff00;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px #00ff00;
+            animation: glitch-animation 2s infinite;
+        }
+
+        @keyframes glitch-animation {
+            0%, 100% {
+                text-shadow: 
+                    0 0 10px #00ff00,
+                    0 0 20px #00ff00;
+            }
+            25% {
+                text-shadow: 
+                    -2px 0 #ff0000,
+                    2px 0 #00ffff,
+                    0 0 10px #00ff00;
+            }
+        }
+
+        /* Typing cursor */
+        .cursor::after {
+            content: "_";
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Additional Info */
+        .extra-info {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid #00ff00;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Animated scan line on extra info */
+        .extra-info::before {
+            content: "";
+            position: absolute;
+            left: -100%;
+            top: 0;
+            height: 100%;
+            width: 50px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
+            animation: infoScan 4s linear infinite;
+        }
+
+        @keyframes infoScan {
+            0% { left: -100px; }
+            100% { left: 100%; }
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px dashed rgba(0, 255, 0, 0.3);
+            transition: all 0.3s;
+        }
+
+        .info-row:hover {
+            background: rgba(0, 255, 0, 0.1);
+            padding-left: 10px;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #999;
+        }
+
+        .info-value {
+            color: #00ff00;
+            text-align: right;
+            font-weight: bold;
+        }
+
+        /* Popup Styles */
+        .popup-overlay {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 20, 0, 0.85);
+            backdrop-filter: blur(5px);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s;
+        }
+
+        .popup-overlay.active {
+            display: flex;
+        }
+
+        .popup-content {
+            background: #000;
+            border: 2px solid #00ff00;
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.6);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+            animation: slideIn 0.5s;
+        }
+        
+        .popup-content > div {
+             transition: opacity 0.3s, visibility 0.3s, max-height 0.5s;
+        }
+        
+        .hidden-section {
+            opacity: 0;
+            visibility: hidden;
+            max-height: 0;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            border: none;
+        }
+
+        .popup-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: #00ff00;
+            font-size: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .popup-close:hover {
+            color: #fff;
+            text-shadow: 0 0 10px #ff0000;
+            transform: rotate(90deg);
+        }
+
+        .popup-title {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .popup-description {
+            color: #ccc;
+            font-size: 14px;
+            margin-bottom: 25px;
+            line-height: 1.5;
+        }
+
+        .price-box {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px dashed #00ff00;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .price-box .new-price {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .old-price {
+            color: #ff0000;
+            text-decoration: line-through;
+            font-size: 18px;
+            display: block;
+            opacity: 0.7;
+        }
+
+        .new-price {
+            color: #00ff00;
+            font-size: 36px;
+            font-weight: bold;
+            display: block;
+            margin: 10px 0;
+            text-shadow: 0 0 15px #00ff00;
+            animation: pulse 1.5s infinite;
+        }
+
+        .payment-info {
+            font-size: 14px;
+            color: #999;
+        }
+        
+        /* Order Bump Styles */
+        .order-bumps-container {
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .order-bumps-title {
+            text-align: center;
+            font-size: 16px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            color: #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .order-bump {
+            background: rgba(0, 255, 0, 0.05);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        .order-bump:hover {
+            background: rgba(0, 255, 0, 0.15);
+            border-color: #00ff00;
+        }
+
+        .order-bump input[type="checkbox"], #awarenessCheckbox {
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #000;
+            border: 2px solid #00ff00;
+            width: 20px;
+            height: 20px;
+            min-width: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .order-bump input[type="checkbox"]:checked, #awarenessCheckbox:checked {
+            background-color: #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .order-bump input[type="checkbox"]:checked::after, #awarenessCheckbox:checked::after {
+            content: '✓';
+            font-size: 16px;
+            color: #000;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+        }
+
+        .order-bump label {
+            cursor: pointer;
+            color: #ccc;
+            font-size: 14px;
+            line-height: 1.4;
+            width: 100%;
+        }
+
+        .order-bump label strong {
+            color: #fff;
+            font-size: 16px;
+            display: block;
+        }
+
+        .order-bump label span {
+            display: block;
+            font-size: 13px;
+            opacity: 0.8;
+        }
+
+        .order-bump .price-tag {
+            margin-top: 5px;
+            font-size: 14px;
+            color: #999;
+            text-align: right;
+        }
+
+        .order-bump .price-tag del {
+            color: #ff3333;
+        }
+
+        .order-bump .price-tag strong {
+            color: #00ff00;
+            font-size: 16px;
+            display: inline;
+        }
+
+        .buy-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(45deg, #00ff00, #00aa00);
+            border: 2px solid #fff;
+            color: #000;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 0 20px #00ff00;
+        }
+        
+        .buy-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #555;
+            color: #999;
+            border-color: #777;
+            box-shadow: none;
+        }
+
+        .buy-button:hover:not(:disabled) {
+            box-shadow: 0 0 40px rgba(0, 255, 0, 0.8);
+            transform: scale(1.02);
+            color: #fff;
+            background: linear-gradient(45deg, #00aa00, #00ff00);
+        }
+        
+        /* PIX Payment Styles */
+        #pix-payment-content, #checkout-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .pix-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+        
+        #pixProfileImage {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid #00ff00;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        #pix-payment-content .popup-description {
+            text-align: left;
+            margin-bottom: 0;
+        }
+        
+        #pixQrCode {
+            width: 250px;
+            height: 250px;
+            background: #111;
+            border: 2px solid #00ff00;
+            padding: 10px;
+            margin: 15px 0;
+            box-shadow: 0 0 20px rgba(0,255,0,0.3);
+        }
+        
+        #pixCopyPaste {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            box-shadow: inset 0 0 10px rgba(0, 255, 0, 0.2);
+            resize: none;
+        }
+        
+        .copy-pix-button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            background: #00ff00;
+            border: 2px solid #fff;
+            color: #000;
+            font-weight: bold;
+        }
+        
+        #pixTimer {
+            margin-top: 15px;
+            font-size: 16px;
+            color: #ffff00;
+            text-shadow: 0 0 5px #ffff00;
+        }
+
+        /* AI Analysis Section */
+        .ai-analysis-section {
+            text-align: center;
+            margin-top: 30px;
+            border-top: 1px dashed #00ff00;
+            padding-top: 20px;
+        }
+        .ai-analysis-section h3 {
+             margin-bottom: 15px;
+        }
+        .ai-analysis-section p {
+            color: #999;
+            margin-bottom: 15px;
+        }
+        #aiAnalyzeBtn {
+             background: #003300; 
+             border-color: #00ff00;
+        }
+        #aiResultContainer {
+            display: none; 
+            margin-top: 20px; 
+            text-align: left; 
+            background: #000; 
+            border: 1px solid #00ff00; 
+            padding: 15px; 
+            min-height: 100px;
+            white-space: pre-wrap; /* To respect newlines from the API */
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Matrix Background -->
+    <div class="matrix-bg" id="matrixBg"></div>
+
+    <!-- Main Terminal -->
+    <div class="terminal-container">
+        <div class="terminal-header">
+            <div class="terminal-title">[ WhatsApp H4ck3r Terminal v2.10 ]</div>
+            <div class="terminal-buttons">
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+                <div class="terminal-button"></div>
+            </div>
+        </div>
+
+        <pre class="ascii-art">
+╦ ╦┬ ┬┌─┐┌┬┐┌─┐╔═╗┌─┐┌─┐  ╦ ╦┌─┐┌─┐┬┌─┌─┐┬─┐
+║║║├─┤├─┤ │ └─┐╠═╣├─┘├─┘  ╠═╣├─┤│  ├┴┐├┤ ├┬┘
+╚╩╝┴ ┴┴ ┴ ┴ └─┘╩ ╩┴  ┴    ╩ ╩┴ ┴└─┘┴ ┴└─┘┴└─
+        [ ELITE CYBER DIVISION ]
+        </pre>
+
+        <form class="hack-form" id="hackForm">
+            <div class="input-group">
+                <label class="input-label" for="phone">TARGET PHONE NUMBER</label>
+                <input 
+                    type="tel" 
+                    id="phone" 
+                    class="hack-input" 
+                    placeholder="+55 11 98765-4321"
+                    required
+                    pattern="[\d\s\(\)\-\+]+"
+                >
+            </div>
+
+            <button type="submit" class="hack-button" id="hackBtn">
+                [ INICIAR INVASÃO ]
+            </button>
+        </form>
+    </div>
+
+    <!-- Hacking Screen Overlay -->
+    <div class="hacking-screen" id="hackingScreen">
+        <div class="hack-terminal">
+            <div class="hack-header glitch-text">
+                [ INFILTRAÇÃO EM PROGRESSO ]
+            </div>
+
+            <div class="target-info">
+                <div><strong>TARGET:</strong> <span id="targetPhone"></span></div>
+                <div><strong>PROTOCOL:</strong> WhatsApp Mobile API v2.24.1</div>
+                <div><strong>ENCRYPTION:</strong> Signal Protocol (E2EE)</div>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+
+            <div class="terminal-output" id="terminalOutput"></div>
+
+            <!-- Results Container -->
+            <div class="results-container" id="resultsContainer">
+                <div class="results-header glitch-text">
+                    [ DADOS EXTRAÍDOS COM SUCESSO ]
+                </div>
+
+                <div class="data-grid">
+                    <div class="data-card">
+                        <div class="data-icon">💬</div>
+                        <div class="data-label">Mensagens Totais</div>
+                        <div class="data-value" id="messagesCount">0</div>
+                    </div>
+
+                    <div class="data-card">
+                        <div class="data-icon">🗑️</div>
+                        <div class="data-label">Conversas Apagadas</div>
+                        <div class="data-value" id="deletedCount">0</div>
+                    </div>
+
+                    <div class="data-card">
+                        <div class="data-icon">📷</div>
+                        <div class="data-label">Fotos Encontradas</div>
+                        <div class="data-value" id="photosCount">0</div>
+                    </div>
+
+                    <div class="data-card">
+                        <div class="data-icon">🎥</div>
+                        <div class="data-label">Vídeos Encontrados</div>
+                        <div class="data-value" id="videosCount">0</div>
+                    </div>
+                     <div class="data-card">
+                        <div class="data-icon">🖼️</div>
+                        <div class="data-label">Mídia Recuperada</div>
+                        <div class="data-value" id="mediaCount">0</div>
+                    </div>
+                </div>
+
+                 <div class="contacts-section">
+                    <h3 style="color: #00ff00; margin-bottom: 15px;">[ PRINCIPAIS CONTATOS ]</h3>
+                    <div class="contacts-grid" id="contactsGrid">
+                        <!-- Contact cards will be inserted here by JS -->
+                    </div>
+                </div>
+
+                <div class="image-section">
+                    <h3 style="color: #00ff00; margin-bottom: 15px;">[ ÚLTIMA FOTO DE PERFIL CAPTURADA ]</h3>
+                    <img id="resultImage" class="result-image" alt="Foto hackeada">
+                </div>
+                
+                 <div class="media-gallery-section">
+                    <h3 style="color: #00ff00; margin-bottom: 15px;">[ IMAGENS E VÍDEOS RECUPERADOS ]</h3>
+                    <div class="media-grid" id="mediaGrid">
+                        <!-- Media items will be inserted here by JS -->
+                    </div>
+                </div>
+
+                <div class="extra-info">
+                    <div class="info-row">
+                        <span class="info-label">Status da conta:</span>
+                        <span class="info-value">ONLINE</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Última vez visto:</span>
+                        <span class="info-value" id="lastSeen">--:--</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Grupos em comum:</span>
+                        <span class="info-value" id="groupsCount">-- grupos</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Contatos compartilhados:</span>
+                        <span class="info-value" id="contactsCount">-- contatos</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="info-label">Tamanho do backup:</span>
+                        <span class="info-value" id="backupSize">-- GB</span>
+                    </div>
+                </div>
+
+                <!-- AI Analysis Section -->
+                <div class="ai-analysis-section">
+                    <h3 style="color: #00ff00;">[ MÓDULO DE INTELIGÊNCIA ARTIFICIAL ]</h3>
+                    <p>Use nossa IA para analisar os metadados e gerar um perfil de comportamento.</p>
+                    <button class="hack-button" id="aiAnalyzeBtn">
+                        [ GERAR ANÁLISE COMPORTAMENTAL ]
+                    </button>
+                    <div id="aiResultContainer"></div>
+                </div>
+
+            </div>
+
+            <div class="action-buttons">
+                <button class="view-data-button" id="viewDataBtn" style="display: none;">
+                    [ VISUALIZAR DADOS COMPLETOS ]
+                </button>
+                <button class="close-button" id="closeBtn" style="display: none;">
+                    [ FECHAR TERMINAL ]
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Data Purchase Popup -->
+    <div class="popup-overlay" id="purchasePopup">
+        <div class="popup-content">
+            <span class="popup-close" id="popupCloseBtn">&times;</span>
+            
+            <div id="offer-content">
+                <h2 class="popup-title glitch-text">[ ACESSO TOTAL AOS DADOS ]</h2>
+                <p class="popup-description">
+                    Desbloqueie o acesso completo e irrestrito a todos os dados extraídos da conta alvo. Veja todas as mensagens, mídias e informações detalhadas.
+                </p>
+                <div class="price-box">
+                    <span class="old-price">De R$97,00</span>
+                    <span class="new-price">Por apenas R$47,90</span>
+                    <span class="payment-info">Pagamento único via PIX</span>
+                </div>
+                
+                <div class="order-bumps-container">
+                    <h3 class="order-bumps-title">[ ADICIONE OFERTAS ESPECIAIS ]</h3>
+                    
+                    <div class="order-bump">
+                        <input type="checkbox" id="bump1" data-price="97" data-name="Invasão Completa do Celular">
+                        <label for="bump1">
+                            <strong>Invasão Completa do Celular</strong>
+                            <span>Acesso total a apps, arquivos e senhas.</span>
+                            <span class="price-tag">De <del>R$297</del> por <strong>+R$97</strong></span>
+                        </label>
+                    </div>
+                
+                    <div class="order-bump">
+                        <input type="checkbox" id="bump2" data-price="47" data-name="Localização em Tempo Real">
+                        <label for="bump2">
+                            <strong>Localização em Tempo Real</strong>
+                            <span>Rastreie o dispositivo 24/7 com precisão.</span>
+                            <span class="price-tag">De <del>R$147</del> por <strong>+R$47</strong></span>
+                        </label>
+                    </div>
+                
+                    <div class="order-bump">
+                        <input type="checkbox" id="bump3" data-price="97" data-name="Teste de Fidelidade">
+                        <label for="bump3">
+                            <strong>Teste de Fidelidade</strong>
+                            <span>Grave o ambiente e ative a câmera remotamente.</span>
+                            <span class="price-tag">De <del>R$197</del> por <strong>+R$97</strong></span>
+                        </label>
+                    </div>
+                </div>
+
+                <button class="buy-button" id="buyNowBtn">
+                    [ COMPRAR AGORA E VER DADOS ]
+                </button>
+            </div>
+            
+             <!-- View 2: Checkout Form (New) -->
+            <div id="checkout-content" class="hidden-section">
+                <h2 class="popup-title glitch-text">[ DADOS PARA PAGAMENTO ]</h2>
+                <p class="popup-description">Preencha seus dados para prosseguir com o pagamento seguro via PIX.</p>
+                <form id="checkoutForm" class="hack-form" style="margin: 0;">
+                    <div class="input-group">
+                        <label class="input-label" for="checkoutName">Nome Completo</label>
+                        <input type="text" id="checkoutName" class="hack-input" required>
+                    </div>
+                    <div class="input-group">
+                        <label class="input-label" for="checkoutWhatsapp">WhatsApp</label>
+                        <input type="tel" id="checkoutWhatsapp" class="hack-input" placeholder="+55 11 98765-4321" required>
+                    </div>
+                    <button type="submit" class="buy-button" id="proceedToPixBtn">[ PROSSEGUIR PARA O PIX ]</button>
+                </form>
+            </div>
+
+            <!-- View 3: PIX Payment -->
+            <div id="pix-payment-content" class="hidden-section">
+                 <h2 class="popup-title glitch-text">[ PAGAMENTO VIA PIX ]</h2>
+                 <div class="pix-header">
+                    <img id="pixProfileImage" src="" alt="Foto do Alvo">
+                    <p class="popup-description">
+                        Escaneie o QR Code ou use o Pix Copia e Cola para finalizar a compra e liberar seu acesso.
+                    </p>
+                 </div>
+                 <img id="pixQrCode" src="" alt="QR Code PIX">
+                 <p id="pixLoading">Gerando PIX seguro...</p>
+                 <textarea id="pixCopyPaste" rows="4" readonly></textarea>
+                 <button id="copyPixBtn" class="buy-button copy-pix-button" disabled>COPIAR CÓDIGO</button>
+                 <div id="pixTimer"></div>
+            </div>
+            
+        </div>
+    </div>
+    
+    <!-- Confirmation Popup -->
+    <div class="popup-overlay" id="confirmationPopup">
+        <div class="popup-content">
+            <h2 class="popup-title glitch-text">[ ⚠ CUIDADO ⚠ ]</h2>
+            <p class="popup-description" id="confirmationWarningText">Tem certeza que este é o WhatsApp que deseja investigar?</p>
+            <div id="confirmationTargetInfo" style="margin-bottom: 20px;">
+                <img id="confirmationImage" src="https://placehold.co/100x100/001100/00ff00?text=..." alt="Foto do Alvo" style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #00ff00; margin-bottom: 10px; object-fit: cover;">
+                <p id="confirmationName" style="font-size: 1.2rem; color: #fff;"></p>
+            </div>
+            <div style="margin: 20px 0; text-align: left; display: flex; align-items: center; justify-content: center;">
+                <input type="checkbox" id="awarenessCheckbox">
+                <label for="awarenessCheckbox" style="color: #ccc; cursor: pointer; font-size: 0.9rem;">Estou ciente de que estou envadindo está conta.</label>
+            </div>
+            <div class="action-buttons">
+                 <button class="hack-button" id="cancelHackBtn" style="background: #333; border-color: #777; width: 48%; margin: 0;">[ CANCELAR ]</button>
+                 <button class="hack-button" id="confirmHackBtn" style="background: #ff0000; border-color: #fff; color: #fff; width: 48%; margin: 0;" disabled>[ PROSSEGUIR ]</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Lightbox for Media Gallery -->
+    <div class="lightbox-overlay" id="lightboxOverlay">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img src="" alt="Imagem Ampliada" id="lightboxImage">
+    </div>
+
+
+    <script>
+        // Matrix Rain Effect
+        function createMatrixRain() {
+            const matrixBg = document.getElementById('matrixBg');
+            if (!matrixBg) return;
+            const columns = Math.floor(window.innerWidth / 20);
+            
+            for (let i = 0; i < columns; i++) {
+                const column = document.createElement('div');
+                column.className = 'matrix-column';
+                column.style.left = i * 20 + 'px';
+                column.style.animationDuration = Math.random() * 15 + 10 + 's';
+                column.style.animationDelay = Math.random() * 5 + 's';
+                
+                let text = '';
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()あいうえおかきくけこ';
+                for (let j = 0; j < 100; j++) {
+                    text += chars[Math.floor(Math.random() * chars.length)] + '\n';
+                }
+                column.textContent = text;
+                matrixBg.appendChild(column);
+            }
+        }
+        createMatrixRain();
+
+        // Phone mask
+        function maskPhone(value) {
+            value = value.replace(/\D/g, '');
+            if (value.length > 0) {
+                value = '+' + value;
+            }
+            if (value.length > 3) {
+                value = value.substring(0, 3) + ' ' + value.substring(3);
+            }
+            if (value.length > 6) {
+                value = value.substring(0, 6) + ' ' + value.substring(6);
+            }
+            if (value.length > 12) {
+                value = value.substring(0, 12) + '-' + value.substring(12, 16);
+            }
+            return value;
+        }
+
+        document.getElementById('phone').addEventListener('input', function(e) {
+            e.target.value = maskPhone(e.target.value);
+        });
+
+        // Generate random statistics
+        function getRandomStats() {
+            return {
+                messages: Math.floor(Math.random() * 4000) + 500,
+                deleted: Math.floor(Math.random() * 150) + 10,
+                photos: Math.floor(Math.random() * 300) + 30,
+                videos: Math.floor(Math.random() * 200) + 20
+            };
+        }
+
+        let currentStats = getRandomStats();
+        let pixTimerInterval = null;
+        let targetData = { name: '', url: '' };
+
+        const hackingSteps = [
+            { text: "[*] Inicializando protocolo de invasão...", type: "info", delay: 100 },
+            { text: "[*] Estabelecendo conexão segura...", type: "info", delay: 100 },
+            { text: "[*] Conectando ao servidor WhatsApp...", type: "info", delay: 100 },
+            { text: "[+] Conexão estabelecida via proxy TOR", type: "success", delay: 100 },
+            { text: "[*] Escondendo localização IP...", type: "warning", delay: 100 },
+            { text: "$ nmap -sV -p 443,5222,5228 whatsapp.com", type: "info", delay: 100 },
+            { text: "[+] Portas vulneráveis identificadas", type: "success", delay: 100 },
+            { text: "[*] Bypassando autenticação 2FA...", type: "warning", delay: 100 },
+            { text: "[*] Gerando token de acesso falso...", type: "info", delay: 100 },
+            { text: "[*] Injetando payload malicioso...", type: "info", delay: 100 },
+            { text: "$ sudo ./whatsapp_exploit --target {PHONE}", type: "info", delay: 100 },
+            { text: "[+] Vulnerabilidade CVE-2024-WA001 detectada", type: "success", delay: 100 },
+            { text: "[*] Explorando falha no protocolo Signal...", type: "warning", delay: 100 },
+            { text: "$ hashcat -m 0 -a 0 encrypted_key.txt wordlist.txt", type: "info", delay: 100 },
+            { text: "[*] Quebrando criptografia AES-256...", type: "warning", delay: 100 },
+            { text: "[*] Descriptografando mensagens E2EE...", type: "info", delay: 100 },
+            { text: "[+] Chave de criptografia obtida: 0xFA3B2C1D...", type: "success", delay: 100 },
+            { text: "[*] Acessando banco de dados SQLite...", type: "info", delay: 100 },
+            { text: "$ sqlite3 msgstore.db", type: "info", delay: 100 },
+            { text: "$ SELECT * FROM messages WHERE phone='{PHONE}'", type: "info", delay: 100 },
+            { text: "[+] " + "{MESSAGES}" + " mensagens encontradas", type: "success", delay: 100 },
+            { text: "[*] Identificando conversas apagadas...", type: "warning", delay: 100 },
+            { text: "[*] Recuperando dados do cache...", type: "info", delay: 100 },
+            { text: "[+] " + "{DELETED}" + " conversas deletadas recuperadas", type: "success", delay: 100 },
+            { text: "[*] Extraindo dados de mídia...", type: "info", delay: 100 },
+            { text: "[*] Baixando arquivos do servidor...", type: "warning", delay: 100 },
+            { text: "[+] " + "{PHOTOS}" + " fotos encontradas (" + "{PHOTO_SIZE}" + " MB)", type: "success", delay: 100 },
+            { text: "[+] " + "{VIDEOS}" + " vídeos encontrados (" + "{VIDEO_SIZE}" + " MB)", type: "success", delay: 100 },
+            { text: "[*] Capturando foto de perfil atual...", type: "info", delay: 100 },
+            { text: "[*] Compilando dados extraídos...", type: "info", delay: 100 },
+            { text: "[+] INVASÃO COMPLETA - Todos os dados foram extraídos", type: "success", delay: 100 }
+        ];
+
+        function addTerminalLine(text, type, callback) {
+            const output = document.getElementById('terminalOutput');
+            const line = document.createElement('div');
+            line.className = `terminal-line ${type} cursor`;
+            
+            let index = 0;
+            const typingSpeed = 20;
+            
+            function typeChar() {
+                if (index < text.length) {
+                    line.textContent = text.substring(0, index + 1);
+                    index++;
+                    setTimeout(typeChar, typingSpeed);
+                } else {
+                    line.classList.remove('cursor');
+                    if (callback) callback();
+                }
+            }
+            
+            output.appendChild(line);
+            output.scrollTop = output.scrollHeight;
+            typeChar();
+        }
+
+        function animateCounter(elementId, targetValue, duration = 2000) {
+            const element = document.getElementById(elementId);
+            const startTime = performance.now();
+            const startValue = 0;
+            
+            function updateCounter(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const currentValue = Math.floor(startValue + (targetValue - startValue) * progress);
+                element.textContent = currentValue.toLocaleString('pt-BR');
+                if (progress < 1) {
+                    requestAnimationFrame(updateCounter);
+                }
+            }
+            requestAnimationFrame(updateCounter);
+        }
+
+        function displayMainContacts(phone) {
+            const contactsGrid = document.getElementById('contactsGrid');
+            contactsGrid.innerHTML = ''; // Clear previous
+
+            const rawPhone = phone.replace(/\D/g, '');
+            const localNumber = rawPhone.length > 4 ? rawPhone.slice(-9) : rawPhone;
+            const phonePrefix = localNumber.substring(0, 3);
+
+            const contacts = [
+                { name: 'Juliana', img: 'https://fernandomkt.com.br/wp-content/uploads/2025/09/3.gif' },
+                { name: 'Carla', img: 'https://fernandomkt.com.br/wp-content/uploads/2025/09/2.gif' },
+                { name: 'Mariana', img: 'https://fernandomkt.com.br/wp-content/uploads/2025/09/1.gif' }
+            ];
+
+            contacts.forEach(contact => {
+                const randomDigit = Math.floor(Math.random() * 10);
+                const contactPhone = `${phonePrefix}${randomDigit}...`;
+                const contactName = `${contact.name.substring(0, 4)}...`;
+
+                const cardHTML = `
+                    <div class="contact-card">
+                        <img src="${contact.img}" alt="Foto de ${contact.name}" onerror="this.onerror=null;this.src='https://placehold.co/80x80/001100/00ff00?text=Error';">
+                        <div class="contact-name">${contactName}</div>
+                        <div class="contact-phone">${contactPhone}</div>
+                    </div>
+                `;
+                contactsGrid.innerHTML += cardHTML;
+            });
+        }
+        
+        function displayRecoveredMedia() {
+            const mediaGrid = document.getElementById('mediaGrid');
+            mediaGrid.innerHTML = '';
+            const imageUrls = [
+                'https://fernandomkt.com.br/wp-content/uploads/2025/09/8.jpg',
+                'https://fernandomkt.com.br/wp-content/uploads/2025/09/7.jpg',
+                'https://fernandomkt.com.br/wp-content/uploads/2025/09/6.jpg',
+                'https://fernandomkt.com.br/wp-content/uploads/2025/09/5.jpg',
+                'https://fernandomkt.com.br/wp-content/uploads/2025/09/4.jpg',
+                'https://fernandomkt.com.br/wp-content/uploads/2025/09/9.jpg'
+            ];
+
+            imageUrls.forEach(url => {
+                const img = document.createElement('img');
+                img.src = url;
+                img.alt = "Mídia Recuperada";
+                img.onclick = () => openLightbox(url);
+                mediaGrid.appendChild(img);
+            });
+        }
+
+        async function startHackingProcess(phone) {
+             const hackingScreen = document.getElementById('hackingScreen');
+             const targetPhone = document.getElementById('targetPhone');
+             const closeBtn = document.getElementById('closeBtn');
+             const viewDataBtn = document.getElementById('viewDataBtn');
+             const resultsContainer = document.getElementById('resultsContainer');
+             
+             targetPhone.textContent = `${targetData.name || 'Desconhecido'} (${phone})`;
+             hackingScreen.classList.add('active');
+             closeBtn.style.display = 'none';
+             viewDataBtn.style.display = 'none';
+             resultsContainer.classList.remove('show');
+             
+             await simulateHacking(phone);
+             
+             let imageUrl = targetData.url;
+             if (!imageUrl) {
+                 imageUrl = `https://placehold.co/400x400/001100/00ff00?text=PROFILE+HACKED%0A${phone.replace(/\D/g, '')}`;
+             }
+
+             document.getElementById('resultImage').src = imageUrl;
+             
+             const now = new Date();
+             document.getElementById('lastSeen').textContent = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}`;
+             
+             const groups = Math.floor(Math.random() * 50) + 10;
+             const contacts = Math.floor(Math.random() * 300) + 50;
+             const backupSize = (Math.random() * 4 + 0.5).toFixed(1);
+             
+             document.getElementById('groupsCount').textContent = `${groups} grupos`;
+             document.getElementById('contactsCount').textContent = `${contacts} contatos`;
+             document.getElementById('backupSize').textContent = `${backupSize} GB`;
+             
+             setTimeout(() => {
+                 resultsContainer.classList.add('show');
+                 animateCounter('messagesCount', currentStats.messages);
+                 animateCounter('deletedCount', currentStats.deleted);
+                 animateCounter('photosCount', currentStats.photos);
+                 animateCounter('videosCount', currentStats.videos);
+                 animateCounter('mediaCount', currentStats.photos + currentStats.videos);
+                 displayMainContacts(phone);
+                 displayRecoveredMedia();
+                 
+                 const output = document.getElementById('terminalOutput');
+                 addTerminalLine("[!] TODOS OS DADOS FORAM BAIXADOS COM SUCESSO", "success");
+                 addTerminalLine("[✓] Operação finalizada - Dados prontos para análise", "success");
+                 closeBtn.style.display = 'inline-block';
+                 viewDataBtn.style.display = 'inline-block';
+             }, 500);
+        }
+
+        async function simulateHacking(phone) {
+            const terminalOutput = document.getElementById('terminalOutput');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            terminalOutput.innerHTML = '';
+            progressFill.style.width = '0%';
+            progressText.textContent = '0%';
+            currentStats = getRandomStats();
+            
+            for (let i = 0; i < hackingSteps.length; i++) {
+                const step = hackingSteps[i];
+                let text = step.text
+                    .replace('{PHONE}', phone)
+                    .replace('{MESSAGES}', currentStats.messages.toLocaleString('pt-BR'))
+                    .replace('{DELETED}', currentStats.deleted)
+                    .replace('{PHOTOS}', currentStats.photos)
+                    .replace('{VIDEOS}', currentStats.videos)
+                    .replace('{PHOTO_SIZE}', (currentStats.photos * 1.8).toFixed(1))
+                    .replace('{VIDEO_SIZE}', (currentStats.videos * 11.5).toFixed(1));
+                
+                await new Promise(resolve => {
+                    setTimeout(() => {
+                        addTerminalLine(text, step.type);
+                        const progress = Math.floor((i + 1) / hackingSteps.length * 100);
+                        progressFill.style.width = progress + '%';
+                        progressText.textContent = progress + '%';
+                        if (Math.random() > 0.7) {
+                            terminalOutput.style.filter = 'blur(1px)';
+                            setTimeout(() => {
+                                terminalOutput.style.filter = 'none';
+                            }, 100);
+                        }
+                        resolve();
+                    }, step.delay);
+                });
+            }
+            return true;
+        }
+
+        document.getElementById('hackForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const phone = document.getElementById('phone').value;
+            if(!phone) return;
+
+            const hackBtn = document.getElementById('hackBtn');
+            hackBtn.disabled = true;
+            hackBtn.textContent = "[ VERIFICANDO ALVO... ]";
+            
+            const webhookUrl = 'https://n8n.fernandomkt.com.br/webhook/hackzap';
+            
+            try {
+                const response = await fetch(webhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone: phone.replace(/\D/g, '') })
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    targetData.name = data.nome || 'Nome Desconhecido';
+                    targetData.url = data.url || `https://placehold.co/100x100/001100/00ff00?text=${phone.slice(-4)}`;
+                } else {
+                    throw new Error('Webhook failed');
+                }
+            } catch (error) {
+                console.error('Webhook Error:', error);
+                targetData.name = 'Alvo Desconhecido';
+                targetData.url = `https://placehold.co/100x100/001100/00ff00?text=${phone.slice(-4)}`;
+            } finally {
+                document.getElementById('confirmationImage').src = targetData.url;
+                document.getElementById('confirmationName').textContent = targetData.name;
+                document.getElementById('confirmationPopup').classList.add('active');
+                hackBtn.disabled = false;
+                hackBtn.textContent = "[ INICIAR INVASÃO ]";
+            }
+        });
+
+        // --- Confirmation Popup Logic ---
+        const confirmationPopup = document.getElementById('confirmationPopup');
+        const confirmHackBtn = document.getElementById('confirmHackBtn');
+        const cancelHackBtn = document.getElementById('cancelHackBtn');
+        const awarenessCheckbox = document.getElementById('awarenessCheckbox');
+
+        awarenessCheckbox.addEventListener('change', () => {
+            confirmHackBtn.disabled = !awarenessCheckbox.checked;
+        });
+        
+        cancelHackBtn.addEventListener('click', () => {
+            confirmationPopup.classList.remove('active');
+            awarenessCheckbox.checked = false;
+            confirmHackBtn.disabled = true;
+        });
+
+        confirmHackBtn.addEventListener('click', () => {
+            confirmationPopup.classList.remove('active');
+            const phone = document.getElementById('phone').value;
+            startHackingProcess(phone);
+            awarenessCheckbox.checked = false;
+            confirmHackBtn.disabled = true;
+        });
+
+        // --- Purchase Popup Logic ---
+        const viewDataBtn = document.getElementById('viewDataBtn');
+        const purchasePopup = document.getElementById('purchasePopup');
+        const popupCloseBtn = document.getElementById('popupCloseBtn');
+        const buyNowBtn = document.getElementById('buyNowBtn');
+        const newPriceEl = purchasePopup.querySelector('.new-price');
+        const bumpCheckboxes = document.querySelectorAll('.order-bump input[type="checkbox"]');
+        const basePrice = 47.90;
+        
+        const offerContent = document.getElementById('offer-content');
+        const checkoutContent = document.getElementById('checkout-content');
+        const pixPaymentContent = document.getElementById('pix-payment-content');
+
+        function getPurchasedProducts() {
+            const products = ['Acesso Total aos Dados']; // Base product
+            bumpCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    const productName = checkbox.dataset.name;
+                    products.push(productName);
+                }
+            });
+            return products;
+        }
+
+        function updateTotalPrice() {
+            let totalPrice = basePrice;
+            bumpCheckboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    totalPrice += parseFloat(checkbox.dataset.price);
+                }
+            });
+            newPriceEl.textContent = `Por apenas R$${totalPrice.toFixed(2).replace('.', ',')}`;
+            buyNowBtn.innerHTML = `[ COMPRAR TUDO POR R$${totalPrice.toFixed(2).replace('.', ',')} ]`;
+            return totalPrice;
+        }
+        
+        bumpCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', updateTotalPrice);
+        });
+
+        document.querySelectorAll('.order-bump').forEach(bump => {
+            bump.addEventListener('click', (e) => {
+                if (e.target.tagName !== 'INPUT') {
+                    const checkbox = bump.querySelector('input[type="checkbox"]');
+                    checkbox.checked = !checkbox.checked;
+                    checkbox.dispatchEvent(new Event('change'));
+                }
+            });
+        });
+
+        document.getElementById('closeBtn').addEventListener('click', function() {
+            document.getElementById('hackingScreen').classList.remove('active');
+            document.getElementById('hackBtn').disabled = false;
+        });
+        
+        function resetPopup() {
+             if(pixTimerInterval) clearInterval(pixTimerInterval);
+             offerContent.classList.remove('hidden-section');
+             checkoutContent.classList.add('hidden-section');
+             pixPaymentContent.classList.add('hidden-section');
+        }
+
+        viewDataBtn.addEventListener('click', function() {
+            bumpCheckboxes.forEach(checkbox => checkbox.checked = false);
+            updateTotalPrice();
+            resetPopup();
+            purchasePopup.classList.add('active');
+        });
+
+        popupCloseBtn.addEventListener('click', function() {
+            purchasePopup.classList.remove('active');
+        });
+
+        purchasePopup.addEventListener('click', function(e) {
+            if (e.target === purchasePopup) {
+                purchasePopup.classList.remove('active');
+            }
+        });
+
+        async function gerarPix(amount) {
+            console.log(`[SIMULATION] Generating PIX for amount: ${amount.toFixed(2)}`);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            try {
+                const amountString = amount.toFixed(2).replace('.', '');
+                const fakePixKey = `00020126580014br.gov.bcb.pix0136a0b1c2d3-e4f5-g6h7-i8j9-k1l2m3n4o5p6520400005303986540${amountString.length.toString().padStart(2, '0')}${amountString}5802BR5913NOME DO VENDEDOR6008BRASILIA62070503***6304ABCD`;
+                const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(fakePixKey)}`;
+                return { image: qrCodeUrl, copyAndPaste: fakePixKey };
+            } catch (e) {
+                console.error("[SIMULATION] Error generating PIX data:", e);
+                throw new Error("Falha ao criar dados do PIX.");
+            }
+        }
+
+        async function handlePixGeneration(amount) {
+            const pixQrCode = document.getElementById('pixQrCode');
+            const pixCopyPaste = document.getElementById('pixCopyPaste');
+            const copyPixBtn = document.getElementById('copyPixBtn');
+            const pixLoading = document.getElementById('pixLoading');
+            const pixTimer = document.getElementById('pixTimer');
+
+            pixLoading.textContent = "Gerando PIX seguro...";
+            pixLoading.style.color = '#00ff00';
+            pixLoading.style.display = 'block';
+            pixQrCode.style.display = 'none';
+            pixCopyPaste.style.display = 'none';
+            copyPixBtn.disabled = true;
+            pixTimer.textContent = '';
+            
+            try {
+                const pixData = await gerarPix(amount);
+                pixQrCode.src = pixData.image;
+                pixCopyPaste.value = pixData.copyAndPaste;
+
+                pixLoading.style.display = 'none';
+                pixQrCode.style.display = 'block';
+                pixCopyPaste.style.display = 'block';
+                copyPixBtn.disabled = false;
+                
+                let duration = 5 * 60;
+                if(pixTimerInterval) clearInterval(pixTimerInterval);
+                pixTimerInterval = setInterval(() => {
+                    const minutes = Math.floor(duration / 60);
+                    const seconds = duration % 60;
+                    pixTimer.textContent = `[ QR Code expira em: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ]`;
+                    if (--duration < 0) {
+                        clearInterval(pixTimerInterval);
+                        pixTimer.textContent = "[ QR Code Expirado! ]";
+                        copyPixBtn.disabled = true;
+                    }
+                }, 1000);
+
+            } catch (error) {
+                pixLoading.textContent = `Erro ao gerar PIX: ${error.message}`;
+                pixLoading.style.color = '#ff0000';
+            }
+        }
+
+        buyNowBtn.addEventListener('click', function() {
+            offerContent.classList.add('hidden-section');
+            checkoutContent.classList.remove('hidden-section');
+            document.getElementById('checkoutWhatsapp').addEventListener('input', function(e) {
+                e.target.value = maskPhone(e.target.value);
+            });
+        });
+
+        document.getElementById('checkoutForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const proceedBtn = document.getElementById('proceedToPixBtn');
+            proceedBtn.disabled = true;
+            proceedBtn.textContent = '[ ENVIANDO DADOS... ]';
+
+            const name = document.getElementById('checkoutName').value;
+            const whatsapp = document.getElementById('checkoutWhatsapp').value;
+            const checkoutWebhookUrl = 'https://n8n.fernandomkt.com.br/webhook/hackzppp';
+
+            try {
+                await fetch(checkoutWebhookUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nome: name,
+                        whatsapp: whatsapp,
+                        valor: updateTotalPrice().toFixed(2),
+                        produtos: getPurchasedProducts()
+                    })
+                });
+            } catch (error) {
+                console.error('Checkout Webhook Error:', error);
+            } finally {
+                 const totalAmount = updateTotalPrice();
+                 checkoutContent.classList.add('hidden-section');
+                 pixPaymentContent.classList.remove('hidden-section');
+                 
+                 const profileImgSrc = document.getElementById('resultImage').src;
+                 document.getElementById('pixProfileImage').src = profileImgSrc;
+                 
+                 handlePixGeneration(totalAmount);
+                 proceedBtn.disabled = false;
+                 proceedBtn.textContent = '[ PROSSEGUIR PARA O PIX ]';
+            }
+        });
+        
+        document.getElementById('copyPixBtn').addEventListener('click', function() {
+            const pixCopyPaste = document.getElementById('pixCopyPaste');
+            pixCopyPaste.select();
+            pixCopyPaste.setSelectionRange(0, 99999); 
+            try {
+                document.execCommand('copy');
+                this.textContent = 'COPIADO!';
+                setTimeout(() => { this.textContent = 'COPIAR CÓDIGO'; }, 2000);
+            } catch (err) {
+                console.error('Fallback: Oops, unable to copy', err);
+            }
+        });
+
+        document.getElementById('resultImage').addEventListener('error', function() {
+            this.src = `https://placehold.co/400x400/001100/00ff00?text=IMAGE+ERROR`;
+        });
+        
+        // --- Lightbox Logic ---
+        const lightboxOverlay = document.getElementById('lightboxOverlay');
+        const lightboxImage = document.getElementById('lightboxImage');
+        const lightboxClose = document.getElementById('lightboxClose');
+
+        function openLightbox(imageUrl) {
+            lightboxImage.src = imageUrl;
+            lightboxOverlay.classList.add('active');
+        }
+
+        function closeLightbox() {
+            lightboxOverlay.classList.remove('active');
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxOverlay.addEventListener('click', function(e) {
+            if (e.target === lightboxOverlay) {
+                closeLightbox();
+            }
+        });
+
+
+        // --- Gemini AI Integration ---
+        const aiAnalyzeBtn = document.getElementById('aiAnalyzeBtn');
+        const aiResultContainer = document.getElementById('aiResultContainer');
+
+        aiAnalyzeBtn.addEventListener('click', generateAIAnalysis);
+
+        async function generateAIAnalysis() {
+            aiAnalyzeBtn.disabled = true;
+            aiAnalyzeBtn.textContent = '[ PROCESSANDO DADOS... ]';
+            
+            aiResultContainer.style.display = 'block';
+            aiResultContainer.innerHTML = '<span class="terminal-line info cursor">Acessando rede neural...</span>';
+
+            const systemPrompt = "Você é um analista de segurança cibernética de elite, especializado em análise de metadados e psicologia de relacionamentos. Seu tom é sério, técnico, mas com uma pitada de drama. Você está apresentando um relatório de uma extração de dados bem-sucedida. Não se identifique, apenas apresente a análise.";
+            
+            const userQuery = `Com base nos seguintes metadados extraídos de um dispositivo móvel, escreva uma análise de risco e um perfil psicológico resumido em 3 parágrafos curtos. Dados: Total de mensagens: ${currentStats.messages}, Conversas apagadas: ${currentStats.deleted}, Fotos encontradas: ${currentStats.photos}, Vídeos encontrados: ${currentStats.videos}. Foque na alta probabilidade de comportamento secreto e infidelidade com base no grande número de conversas apagadas e no volume de mídias. Seja direto e impactante.`;
+
+            try {
+                const generatedText = await callGeminiApi(systemPrompt, userQuery);
+                aiResultContainer.innerHTML = '';
+                typeText(aiResultContainer, generatedText);
+
+            } catch (error) {
+                console.error("Gemini API Error:", error);
+                aiResultContainer.innerHTML = '<span class="terminal-line error">ERRO: Falha ao conectar com o módulo de IA. Tente novamente mais tarde.</span>';
+            } finally {
+                aiAnalyzeBtn.style.display = 'none'; 
+            }
+        }
+
+        function typeText(element, text) {
+            let index = 0;
+            element.innerHTML = '<span class="terminal-line success"></span><span class="cursor">_</span>';
+            const textElement = element.querySelector('span');
+            const cursor = element.querySelector('.cursor');
+
+            function typeChar() {
+                if (index < text.length) {
+                    textElement.textContent += text.charAt(index);
+                    index++;
+                    setTimeout(typeChar, 30);
+                } else {
+                     if (cursor) cursor.remove();
+                }
+            }
+            typeChar();
+        }
+
+        async function callGeminiApi(systemPrompt, userQuery) {
+            const apiKey = ""; 
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+            };
+
+            let response;
+            let attempts = 0;
+            const maxAttempts = 5;
+            let delay = 1000;
+
+            while (attempts < maxAttempts) {
+                try {
+                    response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        const candidate = result.candidates?.[0];
+                        if (candidate && candidate.content?.parts?.[0]?.text) {
+                            return candidate.content.parts[0].text;
+                        } else {
+                            throw new Error("Resposta da API inválida ou vazia.");
+                        }
+                    } else {
+                         if (response.status === 429 || response.status >= 500) {
+                            attempts++;
+                            if (attempts >= maxAttempts) {
+                                 throw new Error(`Erro na API após ${maxAttempts} tentativas: ${response.statusText}`);
+                            }
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            delay *= 2; 
+                         } else {
+                            throw new Error(`Erro na API: ${response.statusText}`);
+                         }
+                    }
+                } catch (error) {
+                     attempts++;
+                     if (attempts >= maxAttempts) {
+                          throw error;
+                     }
+                     await new Promise(resolve => setTimeout(resolve, delay));
+                     delay *= 2;
+                }
+            }
+             throw new Error("Falha na chamada da API após múltiplas tentativas.");
+        }
+    </script>
+</body>
+</html>
+
